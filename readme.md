@@ -48,10 +48,10 @@ animal({
 }
 ```
 
-an query will be parsed:
+an query will be parsed to:
 
 ```js
-const openCrudParser = require('open-crud-parser')
+const openCrudParser = require('open-crud-parser')(['insects', 'birds'])
 
 const formattedQuery = formatQuery(query.where1)
 
