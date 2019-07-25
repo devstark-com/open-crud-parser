@@ -43,8 +43,8 @@ an query will be parsed:
 const openCrudParser = require('open-crud-parser')
 
 const formattedQuery = formatQuery(query.where)
-/* parsing result
-[{
+
+formattedQuery === [{
   type: [{
     value: ['mammal', 'fish'], // from first OR element
     negation: true,
@@ -74,7 +74,7 @@ const formattedQuery = formatQuery(query.where)
     modifier: 'equals'
   }],
   slug: [{
-    value: ["slug-b", "slug-c", "slug-d", "slug-e"],
+    value: ['slug-b', 'slug-c', 'slug-d', 'slug-e'],
     negation: false,
     modifier: 'in'
   }],
@@ -142,16 +142,15 @@ const formattedQuery = formatQuery(query.where)
     } 
   }
 }]
-*/
+
 
 
 const formattedOrderBy = formatOrderBy(query.orderBy)
-/* parsing result
-[{
+
+formattedOrderBy === [{
   column: 'name',
-  order: 'desc
+  order: 'desc'
 }]
-*/
 ```
 
 ## How it works
