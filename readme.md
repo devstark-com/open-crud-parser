@@ -9,7 +9,7 @@ Assume you have similar `where` and `orderBy` queries:
 
 ```js
 animal({
-  where: `
+  where: {
     OR: [
       { type_not_in: ["mammal", "fish"] },
       { AND: [{ id: 1 }, { name: "pigeon" }] }
@@ -22,7 +22,7 @@ animal({
       slug_not_in: ["slug-a"]
       name_gte: "A"
     }
-  `,
+  },
   orderBy: name_desc
 }) {
   id
@@ -37,7 +37,7 @@ animal({
 }
 ```
 
-an output is going to be:
+an query will be parsed:
 
 ```js
 const openCrudParser = require('open-crud-parser')
@@ -152,4 +152,14 @@ const formattedOrderBy = formatOrderBy(query.orderBy)
   order: 'desc
 }]
 */
+```
+
+## How it works
+
+This library parses your schema field names by following scheme:
+
+```
+name_not_gte: String
+
+[name-itself]_[negation]_[modifier]
 ```
