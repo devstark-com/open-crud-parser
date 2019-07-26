@@ -8,7 +8,7 @@ Standard may be found here: https://www.opencrud.org/
 Assume you have similar `where` and `orderBy` queries: 
 
 ```js
-animal({
+queryArgs = {
   where1: {
     AND: [{ name: "parrot" }, { id_in: [1, 2] }]
     slug_in: ["slug-b", "slug-c", "slug-d", "slug-e"]
@@ -35,16 +35,6 @@ animal({
     }
   },
   orderBy: name_desc
-}) {
-  id
-  name
-  slug
-  type
-  birds {
-    id
-    name
-    slug
-  }
 }
 ```
 
@@ -56,154 +46,159 @@ const openCrudParser = require('open-crud-parser')(['insects', 'birds'])
 const formattedQuery = formatQuery(query.where1)
 
 formattedQuery === [{
-  name: [{
-    value: 'No such name',
-    negation: true,
-    modifier: 'equals'
-  }, {
-    value: 'A',
-    negation: false,
-    modifier: 'gte'
-  }],
-  isAnimal: [{
-    value: true,
-    negation: true,
-    modifier: 'equals'
-  }],
   slug: [{
     value: ['slug-b', 'slug-c', 'slug-d', 'slug-e'],
     negation: false,
     modifier: 'in'
   }],
+  name: [{
+      value: 'No such name',
+      negation: true,
+      modifier: 'equals'
+    },
+    {
+      value: 'A',
+      negation: false,
+      modifier: 'gte'
+    },
+    {
+      value: 'parrot',
+      negation: false,
+      modifier: 'equals'
+    }
+  ],
+  id: [{
+    value: [1, 2],
+    negation: false,
+    modifier: 'in'
+  }],
   related: {
     birds: {
-      value: [{ // the same object as root but will never contain relation property
-        slug: [{
+      value: [{
+        'birds.slug': [{
           value: ['slug-a'],
           negation: true,
           modifier: 'in'
         }],
-        name: [{
+        'birds.name': [{
           value: 'A',
           negation: false,
           modifier: 'gte'
         }]
-      }]
+      }],
       modifier: 'every'
     },
     insect: {
-      value: true
-      modifier: 'every'
-    } 
+      value: [{}],
+      modifier: 'is_null'
+    }
   }
 }]
 
 const formattedQuery = formatQuery(query.where2)
 
 formattedQuery === [{
-  type: [{
-    value: ['mammal', 'fish'], // from first OR element
-    negation: true,
-    modifier: 'in'
-  }],
-  name: [{
-    value: 'parrot', // from top level AND
-    negation: false,
-    modifier: 'equals'
-  }, {
-    value: 'No such name',
-    negation: true,
-    modifier: 'equals'
-  }, {
-    value: 'A',
-    negation: false,
-    modifier: 'gte'
-  }],
-  id: [{
-    value: [1, 2],  // from top level AND
-    negation: false,
-    modifier: 'in'
-  }],
-  isAnimal: [{
-    value: true,
-    negation: true,
-    modifier: 'equals'
-  }],
-  slug: [{
-    value: ['slug-b', 'slug-c', 'slug-d', 'slug-e'],
-    negation: false,
-    modifier: 'in'
-  }],
-  related: {
-    birds: {
-      value: [{ // the same object as root but will never contain relation property
-        slug: [{
-          value: ['slug-a'],
-          negation: true,
-          modifier: 'in'
+    slug: [{
+      value: ['slug-b', 'slug-c', 'slug-d', 'slug-e'],
+      negation: false,
+      modifier: 'in'
+    }],
+    name: [{
+        value: 'No such name',
+        negation: true,
+        modifier: 'equals'
+      },
+      {
+        value: 'A',
+        negation: false,
+        modifier: 'gte'
+      },
+      {
+        value: 'parrot',
+        negation: false,
+        modifier: 'equals'
+      }
+    ],
+    type: [{
+      value: ['mammal', 'fish'],
+      negation: true,
+      modifier: 'in'
+    }],
+    id: [{
+      value: [1, 2],
+      negation: false,
+      modifier: 'in'
+    }],
+    related: {
+      birds: {
+        value: [{
+          'birds.slug': [{
+            value: ['slug-a'],
+            negation: true,
+            modifier: 'in'
+          }],
+          'birds.name': [{
+            value: 'A',
+            negation: false,
+            modifier: 'gte'
+          }]
         }],
-        name: [{
-          value: 'A',
-          negation: false,
-          modifier: 'gte'
-        }]
-      }]
-      modifier: 'every'
-    } 
-  }
-}, {
-  id: [{
-    value: 1, // from second OR element
-    negation: false,
-    modifier: 'equals'
-  }]
-  name: [{
-    value: 'pigeon', // from second OR element
-    negation: false,
-    modifier: 'equals'
-  }, {
-    value: 'No such name',
-    negation: true,
-    modifier: 'equals'
-  }, {
-    value: 'A',
-    negation: false,
-    modifier: 'gte'
-  }],
-  isAnimal: [{
-    value: true,
-    negation: true,
-    modifier: 'equals'
-  }],
-  slug: [{
-    value: ["slug-b", "slug-c", "slug-d", "slug-e"],
-    negation: false,
-    modifier: 'in'
-  }],
-  related: {
-    birds: {
-      value: [{ // the same object as root but will never contain relation property
-        slug: [{
-          value: ['slug-a'],
-          negation: true,
-          modifier: 'in'
+        modifier: 'every'
+      }
+    }
+  },
+  {
+    slug: [{
+      value: ['slug-b', 'slug-c', 'slug-d', 'slug-e'],
+      negation: false,
+      modifier: 'in'
+    }],
+    name: [{
+        value: 'No such name',
+        negation: true,
+        modifier: 'equals'
+      },
+      {
+        value: 'A',
+        negation: false,
+        modifier: 'gte'
+      },
+      {
+        value: 'pigeon',
+        negation: false,
+        modifier: 'equals'
+      }
+    ],
+    id: [{
+      value: 1,
+      negation: false,
+      modifier: 'equals'
+    }],
+    related: {
+      birds: {
+        value: [{
+          'birds.slug': [{
+            value: ['slug-a'],
+            negation: true,
+            modifier: 'in'
+          }],
+          'birds.name': [{
+            value: 'A',
+            negation: false,
+            modifier: 'gte'
+          }]
         }],
-        name: [{
-          value: 'A',
-          negation: false,
-          modifier: 'gte'
-        }]
-      }]
-      modifier: 'every'
-    } 
+        modifier: 'every'
+      }
+    }
   }
-}]
+]
 
 
 
 const formattedOrderBy = formatOrderBy(query.orderBy)
 
-formattedOrderBy === [{
+formattedOrderBy === [{ 
   column: 'name',
   order: 'desc'
 }]
