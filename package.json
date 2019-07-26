@@ -10,7 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/devstark-com/open-crud-parser.git"
   },
-  "keywords": [],
+  "keywords": [
+    "opencrud",
+    "crud",
+    "graphql",
+    "parser"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {

@@ -1,5 +1,4 @@
 require('colors')
-const assert = require('assert')
 const { formatQuery, formatOrderBy } = require('./index')(['birds', 'insect'])
 
 const query = {
