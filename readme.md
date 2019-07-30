@@ -3,6 +3,12 @@
 Library for parsing GraphQL queries builded by OpenCRUD standard.
 Standard may be found here: https://www.opencrud.org/
 
+## Installation
+
+```bash
+npm i git+https://github.com/devstark-com/open-crud-parser.git
+```
+
 ## Usage
 
 Assume you have similar `where` and `orderBy` queries: 
